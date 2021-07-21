@@ -98,6 +98,9 @@ Relation *Relation::select(Relation* relation, int index1, int index2) {
     std::set<Tuple> newTuples = relation->Tuples;
     int j = 0;
     for(auto i: newTuples){
+        if(i.getTuple().size() == 0){
+            return newRelation;
+        }
         if(i.getTuple()[index2] == i.getTuple()[index1]){
             newRelation->addTuple(i);
         }
@@ -153,7 +156,7 @@ Relation *Relation::rename(Relation* relation,std::map<int, std::string> variabl
 Relation* Relation::renameRule(Relation* relation, std::map<int,std::string> variables){
     std::vector<std::string> newHeader;
     std::vector<std::string> originalHeader = relation->getHeader()->getHeaderList();
-    for(auto i: relation->getName()){
+    for(auto i: relation->getName() ){
         std::string s(1,i);
         newHeader.push_back(s);
     }
@@ -164,6 +167,9 @@ Relation* Relation::projectRule(Relation* relation,std::map<int,std::string> var
   std::set<Tuple> tuples = relation->getTuples();
   std::set<Tuple> newTuples;
    std::vector<std::string> test =  relation->getHeader()->getHeaderList();
+   if(variables.size() == 0){
+       return relation;
+   }
   for(auto i : tuples){
       std::vector<std::string> tuple;
         for(auto k: test){
@@ -172,7 +178,6 @@ Relation* Relation::projectRule(Relation* relation,std::map<int,std::string> var
                     tuple.push_back(i.getTuple()[j.first]);
                 }
             }
-
         }
       newTuples.insert(Tuple(tuple));
   }

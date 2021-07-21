@@ -47,13 +47,13 @@ void Interpreter::createDatabase(){
     std::cout << "Rule Evaluation" << std::endl;
     restart:
     times++;
-    bool atleastOneadded = false;
+    bool atleastOneAdded = false;
         for (auto i: datalog->Rules) {
             Relation *relation = evaluateRules(i);
             //relation->toString(relation->getHeader()->getSize());
-            bool added = database->addTuplesToRelation(relation->getName(), relation);
-            if(added){
-                atleastOneadded = true;
+            int added = database->addTuplesToRelation(relation->getName(), relation);
+            if(added != 0){
+                atleastOneAdded = true;
             }
 //print head
             std::cout << i->getHeadPredicate()->To_String() + " :- ";
@@ -66,14 +66,13 @@ void Interpreter::createDatabase(){
             }
             std::cout << std::endl;
             //print inside
-
-            relation->toString(relation->getHeader()->getSize());
+            database->toString(relation->getName(),added);
         }
-    if(atleastOneadded){
+    if(atleastOneAdded){
         goto restart;
     }
     std::cout << std::endl;
-    std::cout << "Schemes populated after " + std::to_string(times) + " passes through the Rules" << std::endl << std::endl;
+    std::cout << "Schemes populated after " + std::to_string(times) + " passes through the Rules." << std::endl << std::endl;
     std::cout << "Query Evaluation" << std::endl;
     for(auto i: datalog->Queries){
        Relation* relation = evaluatePredicate(i);
@@ -124,6 +123,13 @@ for(auto i: tuples){
     std::vector<std::string> tuple;
     int itt = 0;
     bool broke = false;
+    if(removed.size()==0){
+        for(int j = 0; j< i.getTuple().size();j++){
+            tuple.push_back(i.getTuple()[j]);
+        }
+        newTuples.insert(Tuple(tuple));
+        break;
+    }
         for(int k =0; k < removed.size();k++){
             continuing:
             if(itt < i.getTuple().size())
