@@ -14,12 +14,17 @@ public:
     void addRelation(std::string name, Relation* relation);
     void print();
     void addFactsToRelation(std::string name, Tuple tuple);
+    void fixRelation(std::string name, Relation* relation);
     Relation* getRelation(std::string string);
 };
 Relation* Database::getRelation(std::string string){
     return relations.find(string)->second;
 }
 void Database::addRelation(std::string name, Relation* relation){
+    relations.insert(std::pair<std::string,Relation*>(name,relation));
+}
+void Database::fixRelation(std::string name, Relation* relation){
+    if(relations.erase(name))
     relations.insert(std::pair<std::string,Relation*>(name,relation));
 }
 void Database::addFactsToRelation(std::string name, Tuple tuple){

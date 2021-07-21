@@ -18,19 +18,31 @@ public:
     Header(Header* header){
         this->headerList = header->headerList;
     }
+    Header(std::vector<std::string> headerList){
+        this->headerList = headerList;
+    }
     void addHeader(std::string name);
     void changeHeader(std::string string, int index);
     std::vector<int>  fixHeader(std::map<int, std::string> variables);
-    void toString();
+
+        void toString();
     std::string getValue(int i);
+    std::vector<std::string> getHeaderList();
+    int getSize();
 
 };
-
+int Header::getSize(){
+    return this->headerList.size();
+}
+std::vector<std::string> Header::getHeaderList(){
+    return this->headerList;
+}
 void Header::addHeader(std::string name) {
 for( auto i : name){
     std::cout << i << std::endl;
 };
 };
+
 std::vector<int> Header::fixHeader(std::map<int, std::string> variables) {
     std::vector<std::string> newHeaderList;
     std::vector<int> indexesSaved;
@@ -62,4 +74,6 @@ void Header::toString(){
 std::string Header::getValue(int i){
     return headerList[i];
 }
+
+
 #endif //PROJECT1_HEADER_H

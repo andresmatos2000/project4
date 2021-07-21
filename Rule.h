@@ -12,7 +12,7 @@ private:
 public:
     std::vector<Predicate*> predicateList;
     void setHeadPredicate(Predicate* headPredicate);
-    std::string getHeadPredicate();
+    Predicate* getHeadPredicate();
     std::string To_String();
     void addPredicate(Predicate* predicate);
     Rule(Predicate* headPredicate){
@@ -27,12 +27,11 @@ void Rule::setHeadPredicate(Predicate* headPredicate) {
 void Rule::addPredicate(Predicate* predicate) {
     predicateList.push_back(predicate);
 }
-
-std::string Rule::getHeadPredicate(){
-    return this->headPredicate->To_String();
+Predicate* Rule::getHeadPredicate(){
+    return this->headPredicate;
 }
 std::string Rule::To_String(){
-    std::string fullString = this->getHeadPredicate() + " :- ";
+    std::string fullString = this->getHeadPredicate()->To_String() + " :- ";
     for (unsigned int i = 0; i < predicateList.size(); ++i) {
         if(i == predicateList.size()-1){
             fullString += predicateList[i]->To_String();

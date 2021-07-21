@@ -13,6 +13,8 @@ Token.h
 /users/guest/a/amatos/cs236/Database.h
 vector
 -
+map
+-
 Relation.h
 /users/guest/a/amatos/cs236/Relation.h
 
@@ -41,6 +43,8 @@ Database.h
 /users/guest/a/amatos/cs236/Database.h
 Header.h
 /users/guest/a/amatos/cs236/Header.h
+Tuple.h
+/users/guest/a/amatos/cs236/Tuple.h
 Relation.h
 /users/guest/a/amatos/cs236/Relation.h
 

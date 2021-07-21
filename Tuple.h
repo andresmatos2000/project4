@@ -9,7 +9,6 @@
 class Tuple {
 private:
 
-
 public:
     std::vector<std::string> values;
     Tuple(std::vector<std::string> values){
@@ -22,7 +21,6 @@ public:
     void toString();
     std::vector<std::string>getTuple();
     bool operator< (const Tuple & other) const;
-
 
 };
 
