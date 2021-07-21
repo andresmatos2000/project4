@@ -136,8 +136,12 @@ Relation *Relation::rename(Relation* relation,std::map<int, std::string> variabl
     Header* temp = new Header(relation->header);
     std::set<Tuple> newTuples = relation->Tuples;
     Relation* newRelation = new Relation(relation->name,temp);
-    for(auto i: variables){
-        temp->changeHeader(i.second,i.first);
+    if(variables.size()>1) {
+        for (auto i: variables) {
+            temp->changeHeader(i.second, i.first);
+        }
+    } else{
+        temp->addHeader(variables.find(0)->second);
     }
     for(auto i: newTuples){
         newRelation->addTuple(i);
@@ -147,17 +151,28 @@ Relation *Relation::rename(Relation* relation,std::map<int, std::string> variabl
 
 }
 Relation* Relation::renameRule(Relation* relation, std::map<int,std::string> variables){
-    relation->getHeader()->fixHeader(variables);
-
+    std::vector<std::string> newHeader;
+    std::vector<std::string> originalHeader = relation->getHeader()->getHeaderList();
+    for(auto i: relation->getName()){
+        std::string s(1,i);
+        newHeader.push_back(s);
+    }
+    relation->getHeader()->setHeader(newHeader);
     return relation;
 }
 Relation* Relation::projectRule(Relation* relation,std::map<int,std::string> variables){
   std::set<Tuple> tuples = relation->getTuples();
   std::set<Tuple> newTuples;
+   std::vector<std::string> test =  relation->getHeader()->getHeaderList();
   for(auto i : tuples){
       std::vector<std::string> tuple;
-        for(auto k: variables){
-            tuple.push_back(i.getTuple()[k.first]);
+        for(auto k: test){
+            for(auto j: variables){
+                if(k == j.second){
+                    tuple.push_back(i.getTuple()[j.first]);
+                }
+            }
+
         }
       newTuples.insert(Tuple(tuple));
   }

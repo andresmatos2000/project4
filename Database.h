@@ -14,7 +14,7 @@ public:
     void addRelation(std::string name, Relation* relation);
     void print();
     void addFactsToRelation(std::string name, Tuple tuple);
-    void fixRelation(std::string name, Relation* relation);
+    bool addTuplesToRelation(std::string name, Relation* relation);
     Relation* getRelation(std::string string);
 };
 Relation* Database::getRelation(std::string string){
@@ -23,9 +23,17 @@ Relation* Database::getRelation(std::string string){
 void Database::addRelation(std::string name, Relation* relation){
     relations.insert(std::pair<std::string,Relation*>(name,relation));
 }
-void Database::fixRelation(std::string name, Relation* relation){
-    if(relations.erase(name))
-    relations.insert(std::pair<std::string,Relation*>(name,relation));
+bool Database::addTuplesToRelation(std::string name, Relation* relation){
+    int initialSize = relations.find(name)->second->getTuples().size();
+    for(auto i: relation->getTuples()){
+        relations.find(name)->second->addTuple(i);
+    }
+    int currentSize = relations.find(name)->second->getTuples().size();
+    if(initialSize < currentSize) {
+        return true;
+    }
+    else
+        return false;
 }
 void Database::addFactsToRelation(std::string name, Tuple tuple){
     for(auto i: relations){

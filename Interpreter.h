@@ -45,35 +45,32 @@ void Interpreter::createDatabase(){
     };
     int times = 0;
     std::cout << "Rule Evaluation" << std::endl;
-    for(auto i: datalog->Rules){
-        Relation* relation = evaluateRules(i);
-        //relation->toString(relation->getHeader()->getSize());
-        database->fixRelation(relation->getName(),relation);
-        times++;
+    restart:
+    times++;
+    bool atleastOneadded = false;
+        for (auto i: datalog->Rules) {
+            Relation *relation = evaluateRules(i);
+            //relation->toString(relation->getHeader()->getSize());
+            bool added = database->addTuplesToRelation(relation->getName(), relation);
+            if(added){
+                atleastOneadded = true;
+            }
 //print head
-        std::cout << i->getHeadPredicate()->To_String() + " :- ";
-        for(int j = 0; j < i->predicateList.size(); j++){
-            if(j == i->predicateList.size()-1){
-                std::cout << i->predicateList[j]->To_String() + ".";
-            } else {
-                std::cout << i->predicateList[j]->To_String() + ",";
+            std::cout << i->getHeadPredicate()->To_String() + " :- ";
+            for (int j = 0; j < i->predicateList.size(); j++) {
+                if (j == i->predicateList.size() - 1) {
+                    std::cout << i->predicateList[j]->To_String() + ".";
+                } else {
+                    std::cout << i->predicateList[j]->To_String() + ",";
+                }
             }
+            std::cout << std::endl;
+            //print inside
+
+            relation->toString(relation->getHeader()->getSize());
         }
-        std::cout << std::endl;
-        //print inside
-        relation->toString(relation->getHeader()->getSize());
-    }
-    for(auto i: datalog->Rules){
-        //print head
-        std::cout << i->getHeadPredicate()->To_String() + " :- ";
-        for(int j = 0; j < i->predicateList.size(); j++) {
-            if (j == i->predicateList.size() - 1) {
-                std::cout << i->predicateList[j]->To_String() + ".";
-            } else {
-                std::cout << i->predicateList[j]->To_String() + ",";
-            }
-        }
-        std::cout << std::endl;
+    if(atleastOneadded){
+        goto restart;
     }
     std::cout << std::endl;
     std::cout << "Schemes populated after " + std::to_string(times) + " passes through the Rules" << std::endl << std::endl;
