@@ -53,7 +53,7 @@ void Interpreter::createDatabase(){
             //relation->toString(relation->getHeader()->getSize());
 //print head
             std::cout << i->getHeadPredicate()->To_String() + " :- ";
-            for (int j = 0; j < i->predicateList.size(); j++) {
+            for (unsigned int j = 0; j < i->predicateList.size(); j++) {
                 if (j == i->predicateList.size() - 1) {
                     std::cout << i->predicateList[j]->To_String() + ".";
                 } else {
@@ -122,21 +122,21 @@ Relation *Interpreter::join(Relation *r1, Relation *r2) {
 
 for(auto i: tuples){
     std::vector<std::string> tuple;
-    int itt = 0;
+    unsigned int itt = 0;
     bool broke = false;
     if(removed.size()==0){
-        for(int j = 0; j< i.getTuple().size();j++){
+        for(unsigned int j = 0; j< i.getTuple().size();j++){
             tuple.push_back(i.getTuple()[j]);
         }
         newTuples.insert(Tuple(tuple));
         break;
     }
-        for(int k =0; k < removed.size();k++){
+        for(unsigned int k =0; k < removed.size();k++){
             continuing:
             if(itt < i.getTuple().size())
-            for(int j = itt; j < i.getTuple().size(); j++){
+            for(unsigned int j = itt; j < i.getTuple().size(); j++){
                     if(i.getTuple()[removed[k].first] == i.getTuple()[removed[k].second]){
-                        if(j == removed[k].second){
+                        if(j == unsigned(removed[k].second)){
                             j++;
                             itt = j;
                             if(k == removed.size()-1) {
@@ -173,9 +173,9 @@ std::pair<std::vector<std::pair<int,int>>,Header*> Interpreter::combineHeaders(H
     std::vector<std::string> newList = temp;
     std::vector<std::pair<int,int>> removedIndexes;
 
-    for(int i = 0; i < temp2.size(); i++){
+    for(unsigned int i = 0; i < temp2.size(); i++){
         bool found = false;
-        for(int j = 0 ; j < temp.size(); j++){
+        for(unsigned int j = 0 ; j < temp.size(); j++){
             if(temp2[i] == temp[j]){
                 found = true;
                 removedIndexes.push_back(std::pair<int,int>(j,i+temp.size()));  // j is the index of the match in the first relation, and i is the second relation

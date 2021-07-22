@@ -55,9 +55,9 @@ std::set<Tuple> Relation::getTuples(){
 std::map<int, std::string> Relation::getVariables(std::string name,Header* header){
     std::vector<std::string> list = header->getHeaderList();
     std::map<int,std::string> newMap;
-    for(int i=0; i < name.size(); i++){
+    for(unsigned int i=0; i < name.size(); i++){
     std::string s(1,name[i]);
-        for(int j=0; j < list.size();j++){
+        for(unsigned int j=0; j < list.size();j++){
             if(s == list[j]){
                 newMap.insert(std::pair<int,std::string>(j,list[j]));
             }
