@@ -23,22 +23,40 @@ Relation* Database::getRelation(std::string string){
 }
 void Database::toString(std::string name,int added){
     Relation* relation = relations.find(name)->second;
-    relation->toString(added);
+    if(added == 0)
+        ;
+    else
+        for(Tuple i : relation->getTuples()) {
+            if (i.values.size() == 1) {
+                std::cout << "  " + relation->getHeader()->getValue(0) + "=" + i.values[0] + "";
+            } else {
+                for (unsigned int j = 0; j < i.values.size(); j++) {
+                    if (j == 0) { //first
+                        std::cout << "  " + relation->getHeader()->getValue(j) + "=" + i.values[j] + ", ";
+                    } else if (j == i.values.size() - 1) // last
+                        std::cout << relation->getHeader()->getValue(j) + "=" + i.values[j];
+                    else {
+                        std::cout << relation->getHeader()->getValue(j) + "=" + i.values[j] + ", ";
+                    }
+                };
+            }
+            std::cout << std::endl;
+        }
 };
 void Database::addRelation(std::string name, Relation* relation){
     relations.insert(std::pair<std::string,Relation*>(name,relation));
 }
 int Database::addTuplesToRelation(std::string name, Relation* relation){
-    int initialSize = relations.find(name)->second->getTuples().size();
-    for(auto i: relation->getTuples()){
-        relations.find(name)->second->addTuple(i);
+    int isAdded = 0;
+    for(auto i: relation->getTuples()) {
+        bool added = false;
+        added = relations.find(name)->second->addTuple(i);
+        if (added) {
+            isAdded++;
+            i.toString(relations.find(name)->second->getHeader());
+        }
     }
-    int currentSize = relations.find(name)->second->getTuples().size();
-    if(initialSize < currentSize) {
-        return currentSize - initialSize;
-    }
-    else
-        return 0;
+return isAdded;
 }
 void Database::addFactsToRelation(std::string name, Tuple tuple){
     for(auto i: relations){

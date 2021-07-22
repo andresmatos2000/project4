@@ -51,10 +51,6 @@ void Interpreter::createDatabase(){
         for (auto i: datalog->Rules) {
             Relation *relation = evaluateRules(i);
             //relation->toString(relation->getHeader()->getSize());
-            int added = database->addTuplesToRelation(relation->getName(), relation);
-            if(added != 0){
-                atleastOneAdded = true;
-            }
 //print head
             std::cout << i->getHeadPredicate()->To_String() + " :- ";
             for (int j = 0; j < i->predicateList.size(); j++) {
@@ -65,8 +61,12 @@ void Interpreter::createDatabase(){
                 }
             }
             std::cout << std::endl;
+            int added = database->addTuplesToRelation(relation->getName(), relation);
+            if(added != 0){
+                atleastOneAdded = true;
+            }
             //print inside
-            database->toString(relation->getName(),added);
+//            database->toString(relation->getName(),added);
         }
     if(atleastOneAdded){
         goto restart;
@@ -99,8 +99,9 @@ Relation* Interpreter::evaluateRules(Rule* rule) {
     } else {
         relations[0]->setName(rule->getHeadPredicate()->getName());
         std::map<int, std::string> variables = relations[0]->getVariables(relations[0]->getName(),relations[0]->getHeader());
+        relations[0]->projectRule(relations[0],rule);
         relations[0]->renameRule(relations[0],variables);
-        relations[0]->projectRule(relations[0],variables);
+
         return relations[0];
     }
 
