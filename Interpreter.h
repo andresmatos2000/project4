@@ -125,11 +125,8 @@ for(auto i: tuples){
     unsigned int itt = 0;
     bool broke = false;
     if(removed.size()==0){
-        for(unsigned int j = 0; j< i.getTuple().size();j++){
-            tuple.push_back(i.getTuple()[j]);
-        }
-        newTuples.insert(Tuple(tuple));
-        break;
+        newTuples.insert(Tuple(i.getTuple()));
+        continue;
     }
         for(unsigned int k =0; k < removed.size();k++){
             continuing:
