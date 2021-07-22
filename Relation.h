@@ -139,13 +139,9 @@ Relation *Relation::rename(Relation* relation,std::map<int, std::string> variabl
     Header* temp = new Header(relation->header);
     std::set<Tuple> newTuples = relation->Tuples;
     Relation* newRelation = new Relation(relation->name,temp);
-    if(variables.size()>1) {
         for (auto i: variables) {
             temp->changeHeader(i.second, i.first);
         }
-    } else{
-        temp->addHeader(variables.find(0)->second);
-    }
     for(auto i: newTuples){
         newRelation->addTuple(i);
     }

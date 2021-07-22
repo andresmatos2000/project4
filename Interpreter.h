@@ -100,7 +100,7 @@ Relation* Interpreter::evaluateRules(Rule* rule) {
         relations[0]->setName(rule->getHeadPredicate()->getName());
         std::map<int, std::string> variables = relations[0]->getVariables(relations[0]->getName(),relations[0]->getHeader());
         relations[0]->projectRule(relations[0],rule);
-        relations[0]->renameRule(relations[0],variables);
+       // relations[0]->renameRule(relations[0],variables);
 
         return relations[0];
     }
